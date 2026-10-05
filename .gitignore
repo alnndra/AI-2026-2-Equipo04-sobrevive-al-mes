@@ -1,0 +1,23 @@
+# archivo: .gitignore, carpeta principal del repositorio.
+# qué hace: le dice a git qué archivos no debe subir: archivos del sistema operativo, de los editores,
+# de herramientas de python y de node, comprimidos y cualquier copia de seguridad.
+# se relaciona con: todo el repositorio. el juego no necesita ninguno de estos archivos para funcionar.
+# responsable: alondra yamileth gonzales cuaresma.
+
+# archivos que crean windows y mac en cada carpeta
+Thumbs.db
+desktop.ini
+.DS_Store
+
+# configuraciones de editores
+.vscode/
+.idea/
+
+# herramientas que no forman parte del juego publicado
+node_modules/
+__pycache__/
+*.pyc
+
+# copias de seguridad y comprimidos
+respaldo*/
+*.zip

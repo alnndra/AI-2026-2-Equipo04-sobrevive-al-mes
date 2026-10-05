@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!-- archivo: index.html, carpeta principal del repositorio.
+     qué hace: es la página del juego. tiene la estructura de la página: cabecera con los modos, mapa, panel,
+     panel de estado, sección de comparación y pantalla de inicio. carga los estilos y los scripts en orden.
+     se abre igual desde github pages, desde un servidor local o con doble clic, porque usa scripts normales
+     y no módulos, y todas las rutas son relativas.
+     se relaciona con: todos los archivos de las carpetas css, assets y js.
+     responsable: alondra yamileth gonzales cuaresma. -->
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Un día de Camila</title>
+<meta name="description" content="Simulador de agentes inteligentes: el día de una estudiante universitaria en Lima y sus gastos pequeños. Trabajo Final - Agentes Inteligentes, USIL.">
+<!-- estilos en el orden original: base primero y celular al final, así cada archivo puede ajustar al anterior -->
+<link rel="stylesheet" href="css/base.css">
+<link rel="stylesheet" href="css/paneles.css">
+<link rel="stylesheet" href="css/hud.css">
+<link rel="stylesheet" href="css/comparar.css">
+<link rel="stylesheet" href="css/inicio.css">
+<link rel="stylesheet" href="css/celular.css">
+</head>
+<body>
+<div class="contenedor">
+  <header class="cabecera">
+    <div class="marca">
+      <h1>Un día de <span>Camila</span></h1>
+      <p>¿Le alcanza la plata para volver a casa? Simulador de agentes · datos simulados</p>
+    </div>
+    <nav class="pestanas" aria-label="Modo de uso">
+      <button id="mJugar" aria-pressed="true">Jugar yo</button>
+      <button id="mAgente" aria-pressed="false">Ver a un agente</button>
+      <button id="mComparar" aria-pressed="false">Comparar agentes</button>
+    </nav>
+    <div class="semilla">
+      <label for="semilla">Semilla base</label>
+      <input id="semilla" type="number" value="2025" min="1">
+      <label for="selDia">Día en el mapa</label>
+      <select id="selDia"></select>
+      <button class="btn" id="btnPresupuesto">Presupuesto</button>
+      <label class="chk"><input type="checkbox" id="chkPens" checked> 💭 Pensamientos</label>
+      <span id="avisoBD" class="aviso-bd">Cargando base de datos…</span>
+    </div>
+  </header>
+
+  <main class="juego" id="vistaJuego">
+    <section>
+      <div id="w">
+        <canvas id="c" width="800" height="500" aria-label="Mapa del pueblo"></canvas>
+        <button id="go" hidden></button>
+        <div id="toast" hidden role="status"></div>
+        <div id="panel" hidden role="dialog" aria-modal="true" aria-labelledby="pt">
+          <button id="x" aria-label="Cerrar">×</button>
+          <h2 id="pt"></h2><div class="sub" id="ps"></div><div id="pb"></div>
+        </div>
+      </div>
+      <div class="ctrl-agente tarjeta" id="ctrlJugar">
+        <label>Agente que resuelve los otros días
+          <select id="selAyuda"></select></label>
+        <button class="btn" id="btnRapido">⚡ Resolver el día rápido</button>
+      </div>
+      <div class="ctrl-agente tarjeta" id="ctrlAgente" hidden>
+        <label>Agente
+          <select id="selAgente"></select></label>
+        <label>Velocidad
+          <input id="velocidad" type="range" min="1" max="8" step="1" value="2"><span id="velTxt">2x</span></label>
+        <button class="btn primario" id="btnAgente">▶ Iniciar</button>
+      </div>
+      <div class="ruta" id="ruta"></div>
+      <p class="ayuda" id="ayuda">Camina con W A S D, las flechas o arrastrando sobre el mapa. En la puerta de tu siguiente parada presiona E o Enter. Escape cierra el panel.</p>
+    </section>
+
+    <aside class="hud tarjeta" aria-live="polite">
+      <h3>Estado de Camila</h3>
+      <div id="hDia" class="dia-hud"></div>
+      <div class="grande">
+        <div><small>Saldo</small><strong id="hSaldo">S/ 0.00</strong></div>
+        <div><small>Hora</small><strong id="hHora">06:30</strong></div>
+      </div>
+      <div style="font-size:14px"><span style="color:var(--suave)">Parada:</span> <b id="hParada">Casa</b></div>
+      <div id="barras"></div>
+      <h3 style="margin-top:14px">Referencia de hoy</h3>
+      <div id="hRef"></div>
+      <h3 style="margin-top:14px">Pagos pendientes</h3>
+      <ul class="lista-mini" id="hPendientes"></ul>
+      <h3 style="margin-top:14px">Condiciones del día</h3>
+      <div class="condiciones" id="hCond"></div>
+      <h3 style="margin-top:14px">Puntaje parcial</h3>
+      <ul class="lista-mini" id="hPuntaje"></ul>
+    </aside>
+  </main>
+
+  <section class="comparar tarjeta" id="vistaComparar">
+    <h2>Comparar agentes</h2>
+    <p>Cada técnica vive los mismos días (mismas semillas = mismo calendario de eventos) sin gráficos. Así la comparación es justa.</p>
+    <div class="nota"><b>¿Por qué varias métricas?</b> Si solo midiéramos el saldo, ganaría el agente que nunca gasta: llegaría al último día con plata, pero con hambre, tarde y sin haber disfrutado nada. Por eso el <b>puntaje del periodo</b> = suma de los puntajes diarios (bienestar + bono por puntualidad − penalización fuerte si no volvió en transporte − penalización por deudas) + bono si llega al último día con el pasaje pagado − penalización si se queda sin dinero antes (más grande cuanto antes ocurra). Y como un agente que quiebra vive menos días, mostramos también el <b>bienestar promedio por día vivido</b>: así no se confunde vivir más con vivir mejor.</div>
+
+    <h3 id="tituloTu" style="margin:18px 0 6px">Tu presupuesto</h3>
+    <p style="margin:0 0 8px">Un periodo por agente con tu presupuesto y tu semilla base. La marca ✕ indica el día en que se quedó sin dinero.</p>
+    <div class="rejilla-graf">
+      <canvas id="graficoSaldo" width="900" height="440" aria-label="Saldo por día de cada agente"></canvas>
+      <div class="tabla-wrap" style="margin-top:0"><table id="tablaTu" class="compacta"><thead><tr>
+        <th>Técnica</th><th>Saldo inicial</th><th>Se acabó</th><th>Saldo final</th><th>Bienestar total</th><th>Bienestar / día vivido</th><th>Sin fondos</th><th>Viajes bus / moto / taxi / a pie</th><th>Tiempo (ms)</th><th>Corridas</th>
+      </tr></thead><tbody></tbody></table></div>
+    </div>
+
+    <div class="rejilla2" style="margin-top:18px">
+      <div class="pesos">
+        <h3 style="margin:8px 0">Pesos del agente basado en utilidad</h3>
+        <div id="sliders"></div>
+      </div>
+      <div>
+        <h3 style="margin:8px 0">Experimento: tres niveles de presupuesto</h3>
+        <p>Cada agente vive <b>200 periodos</b> de la duración elegida (semillas base consecutivas desde la tuya) en tres niveles de presupuesto calculados con el gasto fijo diario: <span id="nivelesTxt"></span>.</p>
+        <button class="btn primario" id="btnComparar">Comparar agentes (200 corridas × 3 niveles)</button>
+        <p id="estadoComparar" style="font-size:13px"></p>
+      </div>
+    </div>
+    <div class="tabla-wrap"><table id="tablaExp"><thead><tr>
+      <th>Nivel</th><th>Técnica</th><th>% llegó al final</th><th>Día prom. de quiebre</th><th>Saldo final prom.</th><th>Bienestar / día vivido</th><th>Puntaje prom.</th><th>Sin fondos prom.</th><th>Viajes bus / moto / taxi / a pie</th><th>Tiempo (ms)</th><th>Corridas</th>
+    </tr></thead><tbody><tr><td colspan="11" style="text-align:center;color:var(--suave)">Presiona "Comparar agentes" para correr el experimento.</td></tr></tbody></table></div>
+    <p class="nota" id="lineaBase" hidden></p>
+  </section>
+</div>
+
+<!-- pantalla de inicio: presupuesto, duración y semilla base -->
+<div id="inicio" class="inicio" role="dialog" aria-modal="true" aria-labelledby="iniTitulo" hidden>
+  <div class="tarjeta inicio-caja">
+    <h2 id="iniTitulo">Antes de empezar</h2>
+    <p>Camila vive varios días seguidos con un presupuesto. El saldo con el que termina un día es con el que empieza el siguiente. Si un día no puede pagar el pasaje de regreso, se le acabó el dinero.</p>
+    <div class="ini-campos">
+      <label>Presupuesto (S/)<input id="iniPresupuesto" type="number" step="0.5" value="390"></label>
+      <fieldset><legend>Duración</legend>
+        <label><input type="radio" name="iniDur" value="15" checked> 15 días</label>
+        <label><input type="radio" name="iniDur" value="30"> 30 días</label>
+      </fieldset>
+      <label>Semilla base<input id="iniSemilla" type="number" min="1" value="2025"></label>
+    </div>
+    <label class="ini-demo">Semillas de demostración (casos especiales de transporte)
+      <select id="iniDemo"><option value="">— Elige un caso para la presentación —</option></select></label>
+    <div id="iniInfo" class="nota"></div>
+    <p id="iniError" class="mal" hidden></p>
+    <div class="acciones"><button class="btn primario" id="iniEmpezar">Empezar</button></div>
+  </div>
+</div>
+
+<!-- orden de carga de los scripts. son scripts normales con defer: se descargan juntos y se ejecutan en
+     este orden cuando la página ya está armada. todos comparten las mismas variables globales.
+     el orden es el mismo en que estaba el código en el archivo único original y no se debe cambiar:
+     1. assets: atlas con las rutas de las imágenes.
+     2. núcleo: generador con semilla, catálogos, base de datos y motor del día.
+     3. transporte: opciones y parámetros, y la elección de transporte que se agrega al motor.
+     4. agentes: lo común y después base, reflejo, modelo, objetivos y utilidad, en el orden de la tabla.
+     5. simulador: corridas, comparación y métricas del periodo.
+     6. mapa: mundo, caminos, decoración, suelo, dibujo, personaje, nube, vehículos, escena y movimiento.
+     7. interfaz: estado, panel de estado y paneles. después la animación del viaje, que es del mapa pero
+        estaba en este lugar del código, el periodo, y la lógica de los pensamientos, que también es del mapa.
+        luego inicio, modos, controles, comparación, gráfico y tabla del experimento.
+     8. principal: bucle principal y arranque, siempre al final porque usa funciones de todos los demás.
+     sql.js no aparece aquí: lo descarga la base de datos al arrancar y, si no carga, usa el respaldo en memoria. -->
+<script src="assets/atlas.js" defer></script>
+<script src="js/nucleo/azar.js" defer></script>
+<script src="js/nucleo/catalogos.js" defer></script>
+<script src="js/nucleo/base_de_datos.js" defer></script>
+<script src="js/nucleo/motor.js" defer></script>
+<script src="js/transporte/opciones.js" defer></script>
+<script src="js/transporte/eleccion.js" defer></script>
+<script src="js/agentes/comun.js" defer></script>
+<script src="js/agentes/base.js" defer></script>
+<script src="js/agentes/reflejo.js" defer></script>
+<script src="js/agentes/modelo.js" defer></script>
+<script src="js/agentes/objetivos.js" defer></script>
+<script src="js/agentes/utilidad.js" defer></script>
+<script src="js/simulador/corridas.js" defer></script>
+<script src="js/simulador/comparacion.js" defer></script>
+<script src="js/simulador/metricas.js" defer></script>
+<script src="js/mapa/mundo.js" defer></script>
+<script src="js/mapa/caminos.js" defer></script>
+<script src="js/mapa/decoracion.js" defer></script>
+<script src="js/mapa/suelo.js" defer></script>
+<script src="js/mapa/dibujo.js" defer></script>
+<script src="js/mapa/personaje.js" defer></script>
+<script src="js/mapa/nube.js" defer></script>
+<script src="js/mapa/vehiculos.js" defer></script>
+<script src="js/mapa/escena.js" defer></script>
+<script src="js/mapa/movimiento.js" defer></script>
+<script src="js/interfaz/estado.js" defer></script>
+<script src="js/interfaz/hud.js" defer></script>
+<script src="js/interfaz/paneles.js" defer></script>
+<script src="js/mapa/animacion_viaje.js" defer></script>
+<script src="js/interfaz/periodo.js" defer></script>
+<script src="js/mapa/pensamientos.js" defer></script>
+<script src="js/interfaz/inicio.js" defer></script>
+<script src="js/interfaz/modos.js" defer></script>
+<script src="js/interfaz/controles.js" defer></script>
+<script src="js/interfaz/comparacion.js" defer></script>
+<script src="js/interfaz/grafico.js" defer></script>
+<script src="js/interfaz/tabla_experimento.js" defer></script>
+<script src="js/principal.js" defer></script>
+</body>
+</html>
