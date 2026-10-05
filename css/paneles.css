@@ -1,0 +1,50 @@
+/* archivo: paneles.css, carpeta css.
+   qué hace: da estilo al panel que aparece sobre el mapa en cada parada: tarjetas de eventos, efectos de
+   aceptar y rechazar, decisión del agente, tarjetas de bus, mototaxi y taxi, avisos de falta de dinero,
+   aviso suave de la referencia y resumen del fin del día.
+   se relaciona con: paneles.js y periodo.js de la interfaz, que arman el contenido del panel.
+   responsable: yasmin akemi haji taira. */
+/* panel sobre el mapa y su botón de cerrar */
+#panel{position:absolute;inset:5% 7%;background:rgba(18,26,42,.97);border:1px solid var(--borde);border-radius:18px;
+  box-shadow:0 20px 60px rgba(0,0,0,.6);padding:18px 22px;overflow:auto;backdrop-filter:blur(4px)}
+#panel h2{margin:0 0 2px;font-size:21px}
+#panel .sub{color:var(--suave);font-size:13px;margin-bottom:12px}
+#x{position:absolute;top:10px;right:12px;width:32px;height:32px;border-radius:50%;border:1px solid var(--borde);background:var(--tarjeta2);cursor:pointer}
+/* tarjeta de un evento con su tipo, su costo y sus efectos */
+.evento{background:var(--tarjeta2);border:1px solid var(--borde);border-radius:12px;padding:12px 14px;margin:10px 0}
+.evento h3{margin:0 0 4px;font-size:17px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.evento p{margin:4px 0}
+.chip{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;padding:2px 8px;border-radius:999px}
+.t-fijo{background:#334155;color:#cbd5e1}.t-necesidad{background:#134e4a;color:#5eead4}
+.t-antojo{background:#4c1d3a;color:#f9a8d4}.t-sorpresa{background:#4a3410;color:#fcd34d}
+.costo{font-weight:800;color:var(--ambar);margin-left:auto}
+.efectos{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:8px;font-size:13px}
+.efectos div{background:rgba(0,0,0,.18);border-radius:8px;padding:6px 8px}
+.efectos b{display:block;font-size:11px;color:var(--suave);text-transform:uppercase;letter-spacing:.4px}
+.acciones{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+.decision{border-left:4px solid var(--acento);padding:8px 12px;background:rgba(45,212,191,.08);border-radius:8px;margin-top:10px}
+.decision.no{border-left-color:var(--acento2);background:rgba(255,122,107,.08)}
+.historial{font-size:13px;color:var(--suave);margin:6px 0 0;padding-left:18px}
+.historial li{margin:2px 0}
+/* tarjetas de transporte del paradero, tres o cuatro lado a lado y una debajo de otra en celular */
+.opciones-viaje{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:8px}
+.opciones-viaje:has(> :nth-child(4)){grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:760px){.opciones-viaje,.opciones-viaje:has(> :nth-child(4)){grid-template-columns:1fr}}
+.situacion{font-size:13px;color:var(--suave);margin:4px 0}
+table.utilidades{margin-top:8px;min-width:0;width:auto}
+.op-viaje{background:var(--tarjeta2);border:1px solid var(--borde);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:4px}
+.op-viaje p{margin:2px 0;font-size:13px}
+.op-viaje .btn{margin-top:auto}
+.op-viaje.apagada{opacity:.6}
+.op-cab{display:flex;gap:6px;align-items:center;font-size:16px;flex-wrap:wrap}
+.op-cab .costo{white-space:nowrap}
+.op-icono{font-size:20px}
+.op-min{color:var(--suave);font-size:13px}
+.btn.sin-fondos{opacity:.5;background:var(--tarjeta2);color:var(--suave);border-color:var(--borde)}
+.aviso-fondos{background:rgba(248,113,113,.12);border:1px solid var(--rojo);color:#fecaca;border-radius:10px;padding:9px 12px;margin-top:10px;font-weight:600}
+.ok{color:var(--verde)}.mal{color:var(--rojo)}
+/* referencia de gasto del día: estado con color y palabra, aviso suave y resumen del día */
+.ref-estado{font-weight:700}.ref-texto{font-size:13px;color:var(--suave);margin-top:4px}
+.aviso-suave{background:rgba(251,191,36,.10);border:1px solid var(--ambar);color:#fde68a;border-radius:10px;padding:8px 12px;margin-top:10px;font-size:14px}
+.resumen-dia{border:1px solid #2a3550;border-radius:10px;padding:10px 12px;margin:10px 0}
+.resumen-dia p{margin:6px 0}.pasa{color:var(--rojo);font-weight:700}

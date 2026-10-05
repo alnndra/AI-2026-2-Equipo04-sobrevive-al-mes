@@ -1,0 +1,32 @@
+/* archivo: hud.css, carpeta css.
+   qué hace: da estilo a la fila de paradas del recorrido, a los controles del modo jugar y del modo agente,
+   y al panel de estado de camila con sus barras, listas y condiciones del día.
+   se relaciona con: hud.js de la interfaz, que llena el panel de estado, y con index.html.
+   responsable: yasmin akemi haji taira. */
+/* fila de paradas del recorrido y controles debajo del mapa */
+.ruta{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.ruta span{font-size:12px;padding:4px 9px;border-radius:999px;border:1px solid var(--borde);color:var(--suave);background:var(--tarjeta)}
+.ruta span.hecha{color:var(--verde);border-color:#1f5f3c}
+.ruta span.actual{color:#06201c;background:var(--acento);border-color:var(--acento);font-weight:700}
+.ayuda{color:var(--suave);font-size:13px;margin:10px 2px 0}
+.ctrl-agente{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;margin-top:12px;padding:12px 14px}
+.ctrl-agente label{display:flex;gap:8px;align-items:center;font-size:14px}
+.ctrl-agente select{background:var(--tarjeta2);border:1px solid var(--borde);border-radius:8px;padding:6px 8px}
+
+/* panel de estado de camila: cifras grandes, barras, listas y condiciones */
+.hud{padding:16px}
+.hud h3{margin:0 0 10px;font-size:13px;color:var(--suave);text-transform:uppercase;letter-spacing:.8px}
+.grande{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
+.grande div{background:var(--tarjeta2);border-radius:12px;padding:10px}
+.grande small{display:block;color:var(--suave);font-size:11px;text-transform:uppercase;letter-spacing:.6px}
+.grande strong{font:700 22px/1.2 ui-monospace,"Cascadia Mono",Consolas,monospace;font-variant-numeric:tabular-nums}
+.barra{margin:9px 0}
+.barra .fila{display:flex;justify-content:space-between;font-size:13px}
+.barra .fila span:last-child{font-variant-numeric:tabular-nums;color:var(--suave)}
+.barra .riel{height:9px;background:#0b1120;border-radius:99px;overflow:hidden;margin-top:4px}
+.barra .riel i{display:block;height:100%;border-radius:99px;transition:width .3s}
+.lista-mini{margin:6px 0 0;padding:0;list-style:none;font-size:13px}
+.lista-mini li{display:flex;justify-content:space-between;padding:4px 0;border-bottom:1px dashed var(--borde)}
+.lista-mini li:last-child{border-bottom:0}
+.condiciones{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.condiciones span{font-size:12px;padding:3px 8px;border-radius:999px;background:var(--tarjeta2);border:1px solid var(--borde)}

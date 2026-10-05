@@ -1,0 +1,25 @@
+/* archivo: inicio.css, carpeta css.
+   qué hace: da estilo a la pantalla de inicio, con sus campos de presupuesto, duración y semilla y el
+   selector de semillas de demostración. también al día del periodo en el panel de estado y al medidor.
+   se relaciona con: inicio.js de la interfaz y con index.html.
+   responsable: yasmin akemi haji taira. */
+/* pantalla de inicio que cubre toda la página */
+.inicio{position:fixed;inset:0;background:rgba(5,8,15,.82);display:grid;place-items:center;z-index:50;padding:16px;overflow:auto}
+.inicio-caja{max-width:600px;width:100%;padding:22px 24px}
+.inicio-caja h2{margin:0 0 6px}
+.inicio-caja p{color:var(--suave);margin:6px 0 12px}
+.ini-campos{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:12px}
+@media (max-width:640px){.ini-campos{grid-template-columns:1fr}}
+.ini-demo{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--suave);margin-bottom:12px}
+.ini-demo select{background:var(--tarjeta2);border:1px solid var(--borde);border-radius:10px;padding:8px 10px;color:var(--texto)}
+.ini-campos label{display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--suave)}
+.ini-campos input[type=number]{background:var(--tarjeta2);border:1px solid var(--borde);border-radius:10px;padding:8px 10px;font-size:16px}
+.ini-campos fieldset{border:1px solid var(--borde);border-radius:10px;padding:6px 10px;margin:0;font-size:14px}
+.ini-campos fieldset label{flex-direction:row;align-items:center;color:var(--texto)}
+.ini-campos legend{font-size:13px;color:var(--suave);padding:0 4px}
+.semilla select,#selAyuda{background:var(--tarjeta2);border:1px solid var(--borde);border-radius:10px;padding:6px 8px}
+.chk{display:flex;gap:6px;align-items:center;cursor:pointer}
+.dia-hud{font-size:14px;margin:-4px 0 10px;color:var(--suave)}
+.dia-hud b{color:var(--texto)}
+.medidor{height:10px;border-radius:99px;background:#0b1120;overflow:hidden;margin:8px 0 4px}
+.medidor i{display:block;height:100%}

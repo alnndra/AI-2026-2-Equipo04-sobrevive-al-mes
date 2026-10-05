@@ -1,0 +1,17 @@
+/* archivo: celular.css, carpeta css.
+   qué hace: ajusta la página para pantallas de celular: el panel va debajo del mapa para que se pueda leer,
+   las pestañas ocupan todo el ancho y las tarjetas se apilan.
+   se relaciona con: todos los demás archivos de estilo. se carga al final para poder cambiar lo que ellos definen.
+   responsable: yasmin akemi haji taira. */
+/* celular: el panel va debajo del mapa para que se pueda leer */
+@media (max-width:640px){
+  .contenedor{padding:12px}
+  .marca h1{font-size:21px}
+  .pestanas{width:100%}
+  .pestanas button{flex:1;padding:8px 6px;font-size:13px}
+  #w{overflow:visible;border:0;box-shadow:none;background:transparent}
+  #c{border-radius:var(--radio);border:1px solid var(--borde)}
+  #panel{position:relative;inset:auto;margin-top:10px;padding:16px}
+  .efectos{grid-template-columns:1fr}
+  .grande[style]{grid-template-columns:1fr 1fr!important}
+}

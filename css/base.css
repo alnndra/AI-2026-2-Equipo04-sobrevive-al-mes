@@ -1,0 +1,55 @@
+/* archivo: base.css, carpeta css.
+   qué hace: define los colores del juego, la letra, la cabecera con las pestañas de modo, los botones, la
+   distribución de la página en dos columnas y el lienzo del mapa.
+   la paleta es propia: azul noche, turquesa y coral, con la letra del sistema.
+   se relaciona con: index.html, que carga los archivos de estilo en orden, y con los demás archivos de
+   estilo, que usan estos colores. se carga primero, así los demás pueden cambiar lo que haga falta.
+   responsable: yasmin akemi haji taira. */
+/* colores y medidas que se reutilizan en todos los estilos */
+:root{
+  --fondo:#0f1522; --tarjeta:#172033; --tarjeta2:#1e2a42; --borde:#2a3956;
+  --texto:#e9eef7; --suave:#93a3bd; --acento:#2dd4bf; --acento2:#ff7a6b;
+  --ambar:#fbbf24; --verde:#4ade80; --rojo:#f87171; --azul:#60a5fa;
+  --radio:14px; --sombra:0 10px 30px rgba(0,0,0,.35);
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--fondo);color:var(--texto);
+  font:15px/1.5 "Segoe UI",system-ui,-apple-system,Roboto,"Helvetica Neue",Arial,sans-serif;
+  min-height:100vh}
+/* cabecera, pestañas de modo, semilla y botones */
+button,input,select{font:inherit;color:inherit}
+.contenedor{max-width:1240px;margin:0 auto;padding:16px}
+header.cabecera{display:flex;flex-wrap:wrap;gap:12px 20px;align-items:center;justify-content:space-between;margin-bottom:14px}
+.marca h1{margin:0;font-size:24px;letter-spacing:.2px}
+.marca h1 span{color:var(--acento)}
+.marca p{margin:2px 0 0;color:var(--suave);font-size:13px}
+.pestanas{display:flex;gap:6px;background:var(--tarjeta);padding:5px;border-radius:999px;border:1px solid var(--borde)}
+.pestanas button{border:0;background:transparent;padding:8px 14px;border-radius:999px;cursor:pointer;color:var(--suave);font-weight:600}
+.pestanas button[aria-pressed="true"]{background:var(--acento);color:#06201c}
+.semilla{display:flex;flex-wrap:wrap;gap:8px;align-items:center;color:var(--suave);font-size:13px}
+.semilla input{width:92px;background:var(--tarjeta);border:1px solid var(--borde);border-radius:10px;padding:6px 8px;color:var(--texto)}
+.btn{border:1px solid var(--borde);background:var(--tarjeta2);padding:8px 14px;border-radius:10px;cursor:pointer;font-weight:600}
+.btn:hover{border-color:var(--acento)}
+.btn.primario{background:var(--acento);border-color:var(--acento);color:#06201c}
+.btn.peligro{background:transparent;border-color:var(--acento2);color:var(--acento2)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn:focus-visible,.pestanas button:focus-visible{outline:3px solid var(--ambar);outline-offset:2px}
+.aviso-bd{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--borde);color:var(--suave);white-space:nowrap}
+.aviso-bd.respaldo{border-color:var(--ambar);color:var(--ambar)}
+.aviso-bd.ok{border-color:var(--verde);color:var(--verde)}
+
+/* distribución: mapa a la izquierda y panel de estado a la derecha, una sola columna en pantallas angostas */
+main.juego{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:16px;align-items:start}
+@media (max-width:980px){main.juego{grid-template-columns:1fr}}
+.tarjeta{background:var(--tarjeta);border:1px solid var(--borde);border-radius:var(--radio);box-shadow:var(--sombra)}
+
+/* lienzo del mapa: se escala con estilos y se ve pixelado. también el botón de entrar y el aviso corto */
+#w{position:relative;border-radius:var(--radio);overflow:hidden;border:1px solid var(--borde);box-shadow:var(--sombra);background:#355e2f}
+#c{display:block;width:100%;height:auto;image-rendering:pixelated;touch-action:none;cursor:crosshair}
+#go{position:absolute;left:50%;bottom:14px;transform:translateX(-50%);background:var(--acento);color:#06201c;
+  border:0;border-radius:999px;padding:9px 18px;font-weight:700;cursor:pointer;box-shadow:0 6px 18px rgba(0,0,0,.4)}
+#go.no-toca{background:#2b3650;color:var(--suave)}
+#go[hidden],#panel[hidden],#toast[hidden]{display:none}
+#toast{position:absolute;left:50%;top:14px;transform:translateX(-50%);background:rgba(15,21,34,.92);border:1px solid var(--ambar);
+  color:var(--texto);padding:8px 14px;border-radius:10px;font-size:14px;max-width:90%;text-align:center}

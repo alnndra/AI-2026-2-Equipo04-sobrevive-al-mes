@@ -1,0 +1,35 @@
+/* archivo: comparar.css, carpeta css.
+   qué hace: da estilo a la sección del modo comparar: deslizadores de pesos, tablas, fila ganadora, fila de
+   la persona, gráfico de saldo, botones de métricas y notas.
+   se relaciona con: comparacion.js, grafico.js y tabla experimento.js de la interfaz.
+   responsable: yasmin akemi haji taira. */
+/* sección de comparación */
+.comparar{margin-top:18px;padding:18px}
+.comparar h2{margin:0 0 6px}
+.comparar p{color:var(--suave);margin:6px 0}
+.rejilla2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:12px}
+@media (max-width:880px){.rejilla2{grid-template-columns:1fr}}
+.pesos label{display:grid;grid-template-columns:110px 1fr 40px;gap:8px;align-items:center;font-size:14px;margin:6px 0}
+.pesos input[type=range]{width:100%;accent-color:var(--acento)}
+.tabla-wrap{overflow-x:auto;margin-top:12px}
+/* tablas con números alineados a la derecha y la técnica ganadora resaltada */
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:640px}
+th,td{padding:9px 10px;text-align:right;border-bottom:1px solid var(--borde);font-variant-numeric:tabular-nums}
+th:first-child,td:first-child{text-align:left}
+th{color:var(--suave);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.5px}
+tr.mejor td{background:rgba(45,212,191,.09)}
+tr.mejor td:first-child{border-left:3px solid var(--acento)}
+tr.persona td{background:rgba(251,191,36,.07)}
+#graficoSaldo{width:100%;height:auto;display:block;background:var(--tarjeta2);border-radius:12px}
+.rejilla-graf{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:1100px){.rejilla-graf{grid-template-columns:1fr}}
+table.compacta{min-width:560px;font-size:13px}
+table.compacta th,table.compacta td{padding:7px 8px}
+.punto{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px;vertical-align:middle}
+tr.nivel-ini td{border-top:2px solid var(--borde)}
+.metricas-btn{display:flex;gap:6px;flex-wrap:wrap;margin-top:12px}
+.metricas-btn button{font-size:13px;padding:6px 10px}
+.metricas-btn button[aria-pressed="true"]{background:var(--acento);color:#06201c;border-color:var(--acento)}
+.nota{font-size:13px;background:var(--tarjeta2);border-left:4px solid var(--ambar);padding:10px 12px;border-radius:8px;color:var(--texto)}
+/* todo lo que tiene el atributo oculto no se muestra, sin excepción */
+[hidden]{display:none!important}
